@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analog | Behind the Decks</title>
+  <meta name="description" content="An interactive 3D DJ setup. Click a device to zoom in, hover over each control and open a split-screen explanation of what it does.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Import map: tells the browser where to find the 3D library files stored in the vendor folder. -->
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }
+  </script>
+</head>
+<body data-page="analog">
+  <header class="topbar">
+    <p class="brand"><a href="index.html">Behind the Decks</a></p>
+    <nav class="site-nav" aria-label="Pages">
+      <a href="digital.html">Digital</a>
+      <a href="analog.html" aria-current="page">Analog</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+    <div class="subbar">
+      <div class="subbar-l"><button type="button" id="back" class="btn btn-sm" hidden>← Full setup</button></div>
+    <div class="topbar-actions">
+      <div class="mode-group">
+      <button type="button" id="mode-toggle" class="toggle" aria-pressed="false">
+        <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+        <span>Explain mode</span>
+      </button>
+      <span id="mode-bar" class="mode-bar" hidden>
+        <button type="button" id="play-toggle" class="toggle" aria-pressed="false" title="Turn the knobs, press the buttons and drag the faders yourself">
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+          <span>Play mode</span>
+        </button>
+        <button type="button" id="demo-toggle" class="toggle" aria-pressed="false" title="DJ mode: a guided first mix. The site tells you what to do, step by step">
+          <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+          <span>DJ mode</span>
+        </button>
+      </span>
+      </div>
+    </div>
+      <div class="subbar-r" id="subbar-r"></div>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <!-- LEFT: the 3D setup -->
+    <section class="viewer" id="viewer" aria-label="Interactive 3D analog DJ setup">
+      <canvas id="scene" tabindex="0"
+        aria-label="3D model of an analog DJ setup. Drag to rotate, scroll to zoom. With this canvas focused, use the arrow keys to rotate and plus and minus to zoom. The devices and their parts are also listed as buttons below."></canvas>
+      <p class="hint" id="hint">Click a device to zoom in · Drag to rotate · Scroll to zoom</p>
+      <div class="tooltip" id="tooltip" hidden></div>
+      <button type="button" id="dial-reset" class="btn dial-reset" hidden>Set the anti-skating dial back to normal</button>
+      <p class="nogl" id="nogl" hidden>The 3D view isn't available in this browser. You can still use the buttons below to read about each device and its controls.</p>
+      <p class="loading" id="loading" role="status">Loading 3D models…</p>
+
+      <button type="button" id="defaults-btn" class="btn defaults-btn" hidden title="Put what is in view (the mixer, a media player or a turntable) back to its default settings">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        <span>Default settings</span>
+      </button>
+      <nav class="chips" id="chips" aria-label="Devices in the setup"></nav>
+    </section>
+
+    <!-- RIGHT: explanation panel (slides in when a part is selected) -->
+    <aside class="panel" id="panel" aria-label="Part details" inert>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <p class="eyebrow"><span id="panel-device"></span> <span id="panel-count"></span></p>
+          <button type="button" id="panel-close" class="btn">Close</button>
+        </div>
+        <h2 id="panel-title" tabindex="-1"></h2>
+
+        <section class="block">
+          <h3>What it is</h3>
+          <p id="panel-what"></p>
+        </section>
+
+        <div class="extra" id="panel-extra">
+          <section class="block">
+            <h3>How the DJ uses it</h3>
+            <p id="panel-use"></p>
+          </section>
+          <section class="block">
+            <h3>What the crowd feels</h3>
+            <p id="panel-crowd"></p>
+          </section>
+        </div>
+
+        <p class="note" id="panel-note">Turn on “Explain mode” at the top to see how DJs use this control and what the crowd experiences.</p>
+
+        <section class="block" id="panel-links-block" hidden>
+          <h3>Learn more</h3>
+          <ul id="panel-links"></ul>
+        </section>
+
+        <div class="panel-nav">
+          <button type="button" id="prev" class="btn">← Previous</button>
+          <button type="button" id="next" class="btn">Next →</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <p class="sr-only" id="status" role="status"></p>
+  <noscript><p class="nogl" style="position:static;padding:24px">This page needs JavaScript to show the 3D setup.</p></noscript>
+
+  <script type="module" src="js/setup.js"></script>
+</body>
+</html>
